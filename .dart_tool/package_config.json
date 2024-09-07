@@ -122,6 +122,18 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "sqflite",
+      "rootUri": "file:///Users/skshin/.pub-cache/hosted/pub.dev/sqflite-2.3.3+1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "sqflite_common",
+      "rootUri": "file:///Users/skshin/.pub-cache/hosted/pub.dev/sqflite_common-2.5.4+2",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
       "name": "stack_trace",
       "rootUri": "file:///Users/skshin/.pub-cache/hosted/pub.dev/stack_trace-1.11.1",
       "packageUri": "lib/",
@@ -138,6 +150,12 @@
       "rootUri": "file:///Users/skshin/.pub-cache/hosted/pub.dev/string_scanner-1.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
+    },
+    {
+      "name": "synchronized",
+      "rootUri": "file:///Users/skshin/.pub-cache/hosted/pub.dev/synchronized-3.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
     },
     {
       "name": "term_glyph",
@@ -170,7 +188,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2024-09-07T14:44:59.574476Z",
+  "generated": "2024-09-07T15:00:56.255138Z",
   "generator": "pub",
   "generatorVersion": "3.5.2",
   "flutterRoot": "file:///opt/homebrew/Caskroom/flutter/3.24.2/flutter",
