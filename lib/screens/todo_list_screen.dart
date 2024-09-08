@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models/todo.dart';
 import '../services/database_helper.dart';
 
@@ -25,32 +26,61 @@ class _TodoListScreenState extends State<TodoListScreen> {
   }
 
   void _addTodo() async {
-    final todo = await showDialog<Todo>(
+    String title = '';
+    DateTime? selectedDate;
+
+    final todo = await showDialog<Todo> (
       context: context,
       builder: (BuildContext context) {
-        String title = '';
-        return AlertDialog(
-          title: Text('새 할 일 추가'),
-          content: TextField(
-            onChanged: (value) {
-              title = value;
-            },
-            decoration: InputDecoration(hintText: "할 일을 입력하세요"),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('취소'),
-              onPressed: () => Navigator.of(context).pop(),
+        return StatefulBuilder(
+          builder: (context, setState) {
+          return AlertDialog(
+            title: Text('새 할 일 추가'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextField(
+                  onChanged: (value) {
+                    title = value;
+                  },
+                  decoration: InputDecoration(hintText: "할 일을 입력하세요"),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  child: Text(
+                      selectedDate == null ? '마감일 선택' : DateFormat('yyyy-MM-dd')
+                          .format(selectedDate!)),
+                  onPressed: () async {
+                    final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2101),
+                    );
+                    if (picked != null && picked != selectedDate) {
+                      setState(() {
+                        selectedDate = picked;
+                      });
+                    }
+                  },
+                ),
+              ],
             ),
-            TextButton(
-              child: Text('추가'),
-              onPressed: () {
-                Navigator.of(context).pop(Todo(title: title));
-              },
-            ),
-          ],
-        );
-      },
+            actions: <Widget>[
+              TextButton(
+                child: Text('취소'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              TextButton(
+                child: Text('추가'),
+                onPressed: () {
+                  Navigator.of(context).pop(Todo(title: title, dueDate: selectedDate));
+                },
+              ),
+            ],
+          );
+        });
+      }
     );
 
     if (todo != null) {
@@ -80,6 +110,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
           final todo = todos[index];
           return ListTile(
             title: Text(todo.title),
+            subtitle: todo.dueDate != null ? Text('마감일: ${DateFormat('yyyy-MM-dd').format(todo.dueDate!)}') : null,
             leading: Checkbox(
               value: todo.isCompleted,
               onChanged: (_) => _toggleTodoStatus(todo),

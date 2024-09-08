@@ -12,6 +12,7 @@ class DatabaseHelper {
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDB('todos.db');
+    await _checkAndUpdateSchema(_database!);
     return _database!;
   }
 
@@ -27,9 +28,20 @@ class DatabaseHelper {
       CREATE TABLE todos(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
-        isCompleted INTEGER
+        isCompleted INTEGER,
+        dueDate TEXT
       )
     ''');
+  }
+
+  Future _checkAndUpdateSchema(Database db) async {
+    var tableInfo = await db.rawQuery('PRAGMA table_info(todos)');
+    var columnNames = tableInfo.map((col) => col['name'] as String).toList();
+
+    if (!columnNames.contains('dueDate')) {
+      await db.execute('ALTER TABLE todos ADD COLUMN dueDate TEXT');
+      print('Added dueDate column to todos table');
+    }
   }
 
   Future<int> insertTodo(Todo todo) async {
